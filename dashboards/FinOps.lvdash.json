@@ -1,0 +1,272 @@
+{
+  "datasets": [
+    {
+      "name": "2179784c",
+      "displayName": "actual cost per workspace",
+      "queryLines": [
+        "WITH\r\n",
+        "-- apply date filter\r\n",
+        "usage_with_ws_filtered_by_date AS (\r\n",
+        "  SELECT\r\n",
+        "    w.workspace_id,\r\n",
+        "    w.workspace_name,\r\n",
+        "    w.workspace_url,\r\n",
+        "    u.usage_quantity,\r\n",
+        "    u.usage_unit,\r\n",
+        "    u.sku_name,\r\n",
+        "    u.usage_end_time,\r\n",
+        "    u.cloud\r\n",
+        "  FROM\r\n",
+        "    system.billing.usage AS u NATURAL JOIN system.access.workspaces_latest AS w\r\n",
+        "  WHERE\r\n",
+        "    YEAR(u.usage_date) = YEAR(CURRENT_DATE()) AND month(u.usage_date) = month(CURRENT_DATE())\r\n",
+        "),\r\n",
+        "-- calc list priced usage in USD\r\n",
+        "prices_list AS (\r\n",
+        "  SELECT\r\n",
+        "    COALESCE(price_end_time, DATE_ADD(current_date, 1)) AS coalesced_price_end_time,\r\n",
+        "    *\r\n",
+        "  FROM\r\n",
+        "    system.billing.list_prices\r\n",
+        "  WHERE\r\n",
+        "    currency_code = 'USD'\r\n",
+        "),\r\n",
+        "prices_contract AS (\r\n",
+        "  SELECT\r\n",
+        "    COALESCE(price_end_time, DATE_ADD(current_date, 1)) AS coalesced_price_end_time,\r\n",
+        "    *\r\n",
+        "  FROM\r\n",
+        "    system.billing.account_prices\r\n",
+        "  WHERE\r\n",
+        "    currency_code = 'USD'\r\n",
+        "),\r\n",
+        "list_priced_usd AS (\r\n",
+        "  SELECT\r\n",
+        "    COALESCE(u.usage_quantity * coalesce(pc.pricing.default,lp.pricing.promotional.default,lp.pricing.default, 0),0) as usage_usd,\r\n",
+        "    u.usage_quantity as usage_DBU,\r\n",
+        "    u.*\r\n",
+        "  FROM\r\n",
+        "    usage_with_ws_filtered_by_date as u\r\n",
+        "      LEFT JOIN prices_list AS lp\r\n",
+        "        ON u.sku_name = lp.sku_name\r\n",
+        "        AND u.cloud = lp.cloud\r\n",
+        "        AND u.usage_unit = lp.usage_unit\r\n",
+        "        AND (u.usage_end_time BETWEEN lp.price_start_time AND lp.coalesced_price_end_time)\r\n",
+        "      LEFT JOIN prices_contract AS pc\r\n",
+        "        ON u.sku_name = pc.sku_name\r\n",
+        "        AND u.cloud = pc.cloud\r\n",
+        "        AND u.usage_unit = pc.usage_unit\r\n",
+        "        AND (u.usage_end_time BETWEEN pc.price_start_time AND pc.coalesced_price_end_time)\r\n",
+        ")\r\n",
+        "-- calc total usage in USD\r\n",
+        "SELECT\r\n",
+        "  workspace_id,\r\n",
+        "  workspace_name,\r\n",
+        "  workspace_url,\r\n",
+        "  round(sum(usage_usd), 2) AS usage_usd,\r\n",
+        "  round(sum(usage_DBU), 2) AS usage_DBU\r\n",
+        "FROM\r\n",
+        "  list_priced_usd\r\n",
+        "GROUP BY\r\n",
+        "  1,\r\n",
+        "  2,\r\n",
+        "  3\r\n",
+        "ORDER BY\r\n",
+        "  4 DESC;"
+      ]
+    },
+    {
+      "name": "fca00fa3",
+      "displayName": "actual cost current workspace",
+      "queryLines": [
+        "WITH\r\n",
+        "-- apply date filter\r\n",
+        "usage_with_ws_filtered_by_date AS (\r\n",
+        "  SELECT\r\n",
+        "    w.workspace_id,\r\n",
+        "    w.workspace_name,\r\n",
+        "    w.workspace_url,\r\n",
+        "    u.usage_quantity,\r\n",
+        "    u.usage_unit,\r\n",
+        "    u.sku_name,\r\n",
+        "    u.usage_end_time,\r\n",
+        "    u.cloud\r\n",
+        "  FROM\r\n",
+        "    system.billing.usage AS u NATURAL JOIN system.access.workspaces_latest AS w\r\n",
+        "  WHERE\r\n",
+        "    YEAR(u.usage_date) = YEAR(CURRENT_DATE()) AND month(u.usage_date) = month(CURRENT_DATE()) and w.workspace_id = dataops_prd.libs.get_workspace_id()\r\n",
+        "),\r\n",
+        "-- calc list priced usage in USD\r\n",
+        "prices_list AS (\r\n",
+        "  SELECT\r\n",
+        "    COALESCE(price_end_time, DATE_ADD(current_date, 1)) AS coalesced_price_end_time,\r\n",
+        "    *\r\n",
+        "  FROM\r\n",
+        "    system.billing.list_prices\r\n",
+        "  WHERE\r\n",
+        "    currency_code = 'USD'\r\n",
+        "),\r\n",
+        "prices_contract AS (\r\n",
+        "  SELECT\r\n",
+        "    COALESCE(price_end_time, DATE_ADD(current_date, 1)) AS coalesced_price_end_time,\r\n",
+        "    *\r\n",
+        "  FROM\r\n",
+        "    system.billing.account_prices\r\n",
+        "  WHERE\r\n",
+        "    currency_code = 'USD'\r\n",
+        "),\r\n",
+        "list_priced_usd AS (\r\n",
+        "  SELECT\r\n",
+        "    COALESCE(u.usage_quantity * coalesce(pc.pricing.default,lp.pricing.promotional.default,lp.pricing.default, 0),0) as usage_usd,\r\n",
+        "    u.usage_quantity as usage_DBU,\r\n",
+        "    u.*\r\n",
+        "  FROM\r\n",
+        "    usage_with_ws_filtered_by_date as u\r\n",
+        "      LEFT JOIN prices_list AS lp\r\n",
+        "        ON u.sku_name = lp.sku_name\r\n",
+        "        AND u.cloud = lp.cloud\r\n",
+        "        AND u.usage_unit = lp.usage_unit\r\n",
+        "        AND (u.usage_end_time BETWEEN lp.price_start_time AND lp.coalesced_price_end_time)\r\n",
+        "      LEFT JOIN prices_contract AS pc\r\n",
+        "        ON u.sku_name = pc.sku_name\r\n",
+        "        AND u.cloud = pc.cloud\r\n",
+        "        AND u.usage_unit = pc.usage_unit\r\n",
+        "        AND (u.usage_end_time BETWEEN pc.price_start_time AND pc.coalesced_price_end_time)\r\n",
+        ")\r\n",
+        "-- calc total usage in USD\r\n",
+        "SELECT\r\n",
+        "  workspace_id,\r\n",
+        "  workspace_name,\r\n",
+        "  workspace_url,\r\n",
+        "  round(sum(usage_usd), 2) AS usage_usd,\r\n",
+        "  round(sum(usage_DBU), 2) AS usage_DBU\r\n",
+        "FROM\r\n",
+        "  list_priced_usd\r\n",
+        "GROUP BY\r\n",
+        "  1,\r\n",
+        "  2,\r\n",
+        "  3\r\n",
+        "ORDER BY\r\n",
+        "  4 DESC;"
+      ]
+    },
+    {
+      "name": "98832da7",
+      "displayName": "most used node types in workspace",
+      "queryLines": [
+        "with node_counts as\r\n",
+        "(SELECT\r\n",
+        "    driver_node_type as node_type, 1 as node_count\r\n",
+        "  FROM\r\n",
+        "    system.compute.clusters\r\n",
+        "WHERE \r\n",
+        "workspace_id = dataops_prd.libs.get_workspace_id()\r\n",
+        "UNION ALL\r\n",
+        "SELECT\r\n",
+        "    worker_node_type as node_type, coalesce(worker_count,max_autoscale_workers) as node_count\r\n",
+        "  FROM\r\n",
+        "    system.compute.clusters\r\n",
+        "WHERE workspace_id = dataops_prd.libs.get_workspace_id()\r\n",
+        ")\r\n",
+        "select node_type, sum(node_count) as count\r\n",
+        "FROM\r\n",
+        "    node_counts\r\n",
+        "GROUP BY ALL\r\n",
+        "ORDER BY count DESC"
+      ]
+    },
+    {
+      "name": "c7ffa25d",
+      "displayName": "most used node type not associated with pools",
+      "queryLines": [
+        "with node_counts as\r\n",
+        "(SELECT\r\n",
+        "    driver_node_type as node_type, 1 as node_count\r\n",
+        "  FROM\r\n",
+        "    system.compute.clusters\r\n",
+        "WHERE \r\n",
+        "workspace_id = dataops_prd.libs.get_workspace_id() AND driver_instance_pool_id is null\r\n",
+        "UNION ALL\r\n",
+        "SELECT\r\n",
+        "    worker_node_type as node_type, coalesce(worker_count,max_autoscale_workers) as node_count\r\n",
+        "  FROM\r\n",
+        "    system.compute.clusters\r\n",
+        "WHERE workspace_id = dataops_prd.libs.get_workspace_id() and worker_instance_pool_id is null\r\n",
+        ")\r\n",
+        "select node_type, sum(node_count) as count\r\n",
+        "FROM\r\n",
+        "    node_counts\r\n",
+        "GROUP BY ALL\r\n",
+        "ORDER BY count DESC"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "5c77d1c0",
+      "displayName": "Workspace",
+      "layout": [
+        {
+          "widget": {
+            "name": "85ddf5b0",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "c7ffa25d",
+                  "fields": [
+                    {
+                      "name": "node_type",
+                      "expression": "`node_type`"
+                    },
+                    {
+                      "name": "count",
+                      "expression": "`count`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "node_type",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "node_type"
+                },
+                "y": {
+                  "fieldName": "count",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "count"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "most used node types not in pools"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 3
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    }
+  }
+}
