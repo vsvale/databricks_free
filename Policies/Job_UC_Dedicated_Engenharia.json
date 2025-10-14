@@ -1,0 +1,387 @@
+{
+  "dbus_per_hour": {
+    "type": "range",
+    "maxValue": 144
+  },
+  "enable_local_disk_encryption": {
+    "type": "fixed",
+    "value": true,
+    "hidden": true
+  },
+  "node_type_id": {
+    "type": "unlimited",
+    "isOptional": true,
+    "hidden": true
+  },
+  "driver_node_type_id": {
+    "type": "unlimited",
+    "isOptional": true,
+    "hidden": true
+  },
+  "docker_image.url": {
+    "type": "forbidden",
+    "hidden": true
+  },
+  "driver_instance_pool_id": {
+    "type": "allowlist",
+    "values": [
+      "0909-172519-cleft107-pool-7tuofksg",
+      "0909-172520-thy95-pool-rrebthcg",
+      "0909-172519-lorn97-pool-6pwsrymo",
+      "0902-163924-pates110-pool-lzz79te8",
+      "0902-163924-tins134-pool-r66ei0b4",
+      "0902-163923-dyer131-pool-qog5fy8g",
+      "0902-164002-paste132-pool-xjou6040",
+      "0902-164005-doggy112-pool-or0uzbps",
+      "0902-164005-haled86-pool-6fjwcc28",
+      "0902-164004-rolls134-pool-d4gzfocw",
+      "0909-172646-notch98-pool-vzo4inm8",
+      "0909-172646-colon96-pool-k5hydhjl",
+      "0909-172647-velds87-pool-ezgpqntc",
+      "0909-172650-wales99-pool-7gt1kseo",
+      "0909-172813-cave102-pool-xl5tzzm8",
+      "0909-172814-ratio81-pool-2yy4jpjl",
+      "0909-172815-tune91-pool-npi6a1hs",
+      "0909-172813-thee103-pool-odj2718w",
+      "0902-150432-kick5-pool-nnl8n4sw",
+      "0902-150431-surer125-pool-h8ro48i8",
+      "0902-150430-lofts94-pool-o5mpiccw",
+      "0902-150434-beams95-pool-suf32oks",
+      "0909-174310-toque114-pool-7bd49a8g",
+      "0909-174309-rook100-pool-oey0oowg",
+      "0909-174308-disco103-pool-gratdv68",
+      "0909-174306-parka102-pool-6n24e040",
+      "0909-172252-beck87-pool-edinas5s",
+      "0909-172250-oat91-pool-91bkpes0",
+      "0909-172251-smite95-pool-bxrz4x74",
+      "0909-172255-heard84-pool-cuz2iryo",
+      "0904-143702-slump63-pool-oanf22hc",
+      "0904-143706-nerdy201-pool-fcqgbsb4",
+      "0904-143705-pour180-pool-mdb92974",
+      "0904-143705-conk181-pool-9095vkkc",
+      "0909-174844-vole117-pool-evscpqts",
+      "0909-174846-huffs107-pool-qx8bype8",
+      "0909-174840-skids106-pool-3t4acx00",
+      "0909-174834-rent103-pool-50z6kceo",
+      "0904-143724-entry182-pool-ops4qzv4",
+      "0904-143725-wider64-pool-337a51cg",
+      "0904-143725-just206-pool-1g6hbv9s",
+      "0904-143723-bus203-pool-d16j5qfl"
+    ],
+    "defaultValue": "0904-143724-entry182-pool-ops4qzv4",
+    "isOptional": true,
+    "hidden": false
+  },
+  "instance_pool_id": {
+    "type": "allowlist",
+    "values": [
+      "0909-172519-hail106-pool-42850t1s",
+      "0909-172520-gads91-pool-8yu9ci6o",
+      "0909-172519-oven95-pool-cg867ndc",
+      "0902-163924-wipe8-pool-z916tvrl",
+      "0902-163924-brew133-pool-iu8qcx00",
+      "0902-163923-phase109-pool-7u1jjeog",
+      "0902-164002-seat97-pool-xz4uohe8",
+      "0902-164005-chile98-pool-6u3ys9ao",
+      "0902-164005-djinn99-pool-nwck5li8",
+      "0902-164004-slink9-pool-9fvofuhc",
+      "0909-172645-pans97-pool-2kc5zi8g",
+      "0909-172646-slash99-pool-p48555hs",
+      "0909-172647-mason109-pool-orq9kyq8",
+      "0909-172650-rests98-pool-1qhnagb4",
+      "0909-172812-plain111-pool-fw2yo6c0",
+      "0909-172814-fewer93-pool-nj1hh2j4",
+      "0909-172815-sorta112-pool-ac6l8wsw",
+      "0909-172813-stint90-pool-cm6qlhkc",
+      "0902-150432-calfs4-pool-mmguty4w",
+      "0902-150430-sofa131-pool-jjun12xc",
+      "0902-150429-wees80-pool-na3wauc0",
+      "0902-150434-cage104-pool-tfn1egi8",
+      "0909-174310-ogled87-pool-19ud5i4w",
+      "0909-174309-gabs113-pool-2o9921ao",
+      "0909-174308-rift99-pool-rpaqgl5s",
+      "0909-174306-boots103-pool-ageg31u8",
+      "0909-172252-flays93-pool-lzsr7lsw",
+      "0909-172250-bird94-pool-e6cwc840",
+      "0909-172251-ennui92-pool-h4duxe6o",
+      "0909-172255-glen94-pool-jlgu8aa8",
+      "0904-143702-ides62-pool-dkt26byo",
+      "0904-143705-gnash132-pool-239dsgks",
+      "0904-143704-plied143-pool-ib5e4phs",
+      "0904-143705-whet3-pool-ubsdyblg",
+      "0909-174844-morns105-pool-j2inw45s",
+      "0909-174845-sward97-pool-0k723its",
+      "0909-174840-ruffs107-pool-wo6t60b4",
+      "0909-174834-yucca96-pool-2lrsoowg",
+      "0904-143723-fame4-pool-mx9sp4pc",
+      "0904-143724-chit141-pool-ni6qkh5c",
+      "0904-143725-gamey205-pool-lx5l44l0",
+      "0904-143723-bluer202-pool-aela9gy8"
+    ],
+    "defaultValue": "0904-143723-fame4-pool-mx9sp4pc",
+    "isOptional": true,
+    "hidden": false
+  },
+  "custom_tags.datadog": {
+    "type": "allowlist",
+    "values": [
+      "TRUE",
+      "FALSE"
+    ],
+    "defaultValue": "TRUE",
+    "isOptional": true,
+    "hidden": false
+  },
+  "custom_tags.BU": {
+    "type": "allowlist",
+    "values": [
+      "ECS"
+    ],
+    "defaultValue": "ECS",
+    "isOptional": true,
+    "hidden": false
+  },
+  "custom_tags.Environment": {
+    "type": "allowlist",
+    "values": [
+      "PRD"
+    ],
+    "defaultValue": "PRD",
+    "isOptional": true,
+    "hidden": false
+  },
+  "custom_tags.BusinessServices": {
+    "type": "unlimited",
+    "defaultValue": "DATAOPS",
+    "isOptional": true,
+    "hidden": false
+  },
+  "custom_tags.CreatedBy": {
+    "type": "unlimited",
+    "defaultValue": "DATAOPS",
+    "isOptional": true,
+    "hidden": false
+  },
+  "custom_tags.JobType": {
+    "type": "allowlist",
+    "values": [
+      "ETL"
+    ],
+    "defaultValue": "ETL",
+    "isOptional": true,
+    "hidden": false
+  },
+  "cluster_log_conf.path": {
+    "type": "fixed",
+    "value": "/Volumes/dataops_prd/audit/cluster_logs",
+    "hidden": true
+  },
+  "cluster_log_conf.type": {
+    "type": "fixed",
+    "value": "VOLUMES",
+    "hidden": true
+  },
+  "cluster_type": {
+    "type": "fixed",
+    "value": "job",
+    "hidden": true
+  },
+  "data_security_mode": {
+    "type": "fixed",
+    "value": "SINGLE_USER",
+    "hidden": false
+  },
+  "single_user_name": {
+    "type": "fixed",
+    "value": "ecs_ci_cd_datalake@br.experian.com",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.io.cache.enabled": {
+    "type": "fixed",
+    "value": "true",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.io.cache.compression.enabled": {
+    "type": "fixed",
+    "value": "false",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.liquid.eagerClustering.streaming.enabled": {
+    "type": "fixed",
+    "value": "true",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.properties.defaults.checkpointPolicy": {
+    "type": "fixed",
+    "value": "v2",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.properties.defaults.enableTypeWidening": {
+    "type": "fixed",
+    "value": "true",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.autoCompact.enabled": {
+    "type": "fixed",
+    "value": "auto",
+    "hidden": true
+  },
+  "spark_conf.spark.hadoop.fs.s3.enableServerSideEncryption": {
+    "type": "fixed",
+    "value": "true",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.properties.defaults.checkpointPolicy": {
+    "type": "fixed",
+    "value": "v2",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.adaptive.skewJoin.spillProof.enabled": {
+    "type": "fixed",
+    "value": "true",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.adaptive.autoOptimizeShuffle.enabled": {
+    "type": "fixed",
+    "value": "true",
+    "hidden": true
+  },
+  "spark_conf.spark.hadoop.fs.s3.enableServerSideEncryption": {
+    "type": "fixed",
+    "value": "true",
+    "hidden": true
+  },
+  "spark_conf.spark.driver.maxResultSize": {
+    "type": "fixed",
+    "value": "30g",
+    "hidden": true
+  },
+  "spark_conf.spark.hadoop.fs.s3a.acl.default": {
+    "type": "fixed",
+    "value": "BucketOwnerFullControl",
+    "hidden": true
+  },
+  "autoscale.max_workers": {
+    "type": "range",
+    "maxValue": 20,
+    "defaultValue": 10,
+    "isOptional": false
+  },
+  "autoscale.min_workers": {
+    "type": "fixed",
+    "value": 1,
+    "hidden": true
+  },
+  "workload_type.clients.jobs": {
+    "type": "fixed",
+    "value": true,
+    "hidden": true
+  },
+  "workload_type.clients.notebooks": {
+    "type": "fixed",
+    "value": false,
+    "hidden": true
+  },
+  "spark_version": {
+    "type": "allowlist",
+    "values": [
+      "auto:latest",
+      "auto:latest-lts-ml",
+      "auto:latest-ml",
+      "auto:latest-lts",
+      "auto:prev-major",
+      "auto:prev-major-ml",
+      "auto:prev-lts",
+      "auto:prev-lts-ml",
+      "14.3.x-scala2.12"
+    ],
+    "defaultValue": "auto:latest-lts",
+    "isOptional": false,
+    "hidden": false
+  },
+  "runtime_engine": {
+    "type": "fixed",
+    "value": "STANDARD",
+    "hidden": true
+  },
+  "aws_attributes.instance_profile_arn": {
+    "type": "fixed",
+    "value": "arn:aws:iam::093785888205:instance-profile/dataops-databricks-workerenv-instance-profile-prd",
+    "hidden": true
+  },
+  "aws_attributes.availability": {
+    "type": "allowlist",
+    "values": [
+      "SPOT",
+      "ON_DEMAND",
+      "SPOT_WITH_FALLBACK"
+    ],
+    "defaultValue": "SPOT_WITH_FALLBACK",
+    "isOptional": true
+  },
+  "spark_conf.spark.databricks.delta.properties.defaults.logRetentionDuration": {
+    "type": "fixed",
+    "value": "interval 60 days",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.properties.defaults.deletedFileRetentionDuration": {
+    "type": "fixed",
+    "value": "interval 60 days",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.properties.defaults.timeUntilArchived": {
+    "type": "fixed",
+    "value": "1826 days",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.properties.defaults.enableDeletionVectors": {
+    "type": "fixed",
+    "value": "True",
+    "hidden": true
+  },
+  "spark_conf.spark.decommission.enabled": {
+    "type": "fixed",
+    "value": "True",
+    "hidden": true
+  },
+  "spark_conf.spark.sql.join.preferSortMergeJoin": {
+    "type": "fixed",
+    "value": "False",
+    "hidden": true
+  },
+  "spark_conf.spark.sql.shuffle.partitions": {
+    "type": "fixed",
+    "value": "auto",
+    "hidden": true
+  },
+  "spark_conf.spark.storage.decommission.shuffleBlocks.enabled": {
+    "type": "fixed",
+    "value": "True",
+    "hidden": true
+  },
+  "spark_env_vars.SPARK_WORKER_OPTS": {
+    "type": "fixed",
+    "value": "-Dspark.decommission.enabled=true",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.properties.defaults.enableChangeDataFeed": {
+    "type": "fixed",
+    "value": "True",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.properties.defaults.autoOptimize.optimizeWrite": {
+    "type": "fixed",
+    "value": "True",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.adaptive.autoBroadcastJoinThreshold": {
+    "type": "fixed",
+    "value": "200m",
+    "hidden": true
+  },
+  "spark_conf.spark.databricks.delta.preview.enabled": {
+    "type": "fixed",
+    "value": "True",
+    "hidden": true
+  }
+}
