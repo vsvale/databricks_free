@@ -1,0 +1,155 @@
+# Databricks specific
+.databricks/
+.databricks-credentials
+.databrickscfg
+*.dbx
+*.dbc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Data files (common formats)
+*.csv
+*.parquet
+*.json
+*.avro
+*.orc
+*.delta
+*.tsv
+*.xlsx
+*.xls
+
+# Model files
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.model
+
+# Secrets and credentials
+secrets/
+credentials/
+.env.local
+.env.production
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Databricks workspace specific
+workspace/
+user/
+shared/
+temp/
+
+# Databricks CLI
+.cli/
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Databricks connect
+.databricks-connect/
+
+# Local development
+local/
+scratch/
+test_data/
+
+# Package management
+requirements.txt.bak
+Pipfile.lock
+poetry.lock
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter
+.jupyter/
+
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Scala/Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Node.js (if using Databricks Connect with JS)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
