@@ -94,5 +94,5 @@ AS SELECT
   CURRENT_TIMESTAMP() AS computed_time,
   '1.0' AS gold_layer_version
 
-FROM ubereats.silver.tb_orders_enriched
+FROM ubereats.silver.tb_orders
 GROUP BY DATE(order_date);

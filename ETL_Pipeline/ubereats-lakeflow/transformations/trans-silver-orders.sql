@@ -7,7 +7,7 @@
 -- Demo: Shows quality checks (DROP invalid), transformations, calculated fields
 -- ============================================================================
 
-CREATE OR REFRESH STREAMING TABLE ubereats.silver.tb_orders_enriched(
+CREATE OR REFRESH STREAMING TABLE ubereats.silver.tb_orders(
   -- Data Quality Constraints: DROP invalid records
   CONSTRAINT valid_order_id EXPECT (order_id IS NOT NULL) ON VIOLATION DROP ROW,
   CONSTRAINT valid_amount EXPECT (total_amount > 0) ON VIOLATION DROP ROW,
@@ -26,7 +26,7 @@ TBLPROPERTIES (
 )
 AS SELECT
   -- === Core Order Fields ===
-  CAST(order_id AS STRING) AS order_id,
+  CAST(order_id AS BIGINT) AS order_id,
   CAST(order_date AS TIMESTAMP) AS order_date,
   CAST(total_amount AS DECIMAL(10,2)) AS total_amount,
 
@@ -38,15 +38,15 @@ AS SELECT
   CAST(rating_key AS STRING) AS rating_key,
 
   -- === Temporal Enrichments ===
-  YEAR(order_date) AS order_year,
-  MONTH(order_date) AS order_month,
-  DAY(order_date) AS order_day,
-  HOUR(order_date) AS order_hour,
-  MINUTE(order_date) AS order_minute,
-  DAYOFWEEK(order_date) AS day_of_week,
+  YEAR(CAST(order_date AS TIMESTAMP)) AS order_year,
+  MONTH(CAST(order_date AS TIMESTAMP)) AS order_month,
+  DAY(CAST(order_date AS TIMESTAMP)) AS order_day,
+  HOUR(CAST(order_date AS TIMESTAMP)) AS order_hour,
+  MINUTE(CAST(order_date AS TIMESTAMP)) AS order_minute,
+  DAYOFWEEK(CAST(order_date AS TIMESTAMP)) AS day_of_week,
 
   -- Day name
-  CASE DAYOFWEEK(order_date)
+  CASE DAYOFWEEK(CAST(order_date AS TIMESTAMP))
     WHEN 1 THEN 'Sunday'
     WHEN 2 THEN 'Monday'
     WHEN 3 THEN 'Tuesday'
