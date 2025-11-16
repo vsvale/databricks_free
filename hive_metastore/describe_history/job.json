@@ -1,0 +1,109 @@
+{
+  "name": "table_job_hive",
+  "email_notifications": {
+    "on_failure": [
+      "vinicius.vale@br.experian.com"
+    ],
+    "no_alert_for_skipped_runs": true
+  },
+  "webhook_notifications": {},
+  "timeout_seconds": 0,
+  "trigger": {
+    "pause_status": "UNPAUSED",
+    "table_update": {
+      "table_names": [
+        "dataops_prd.migration.current_hive_tables"
+      ],
+      "min_time_between_triggers_seconds": 86400
+    }
+  },
+  "max_concurrent_runs": 1,
+    "tasks": [
+    {
+      "task_key": "list_databases_hive",
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "table_job_hive/src/databricks/workspace/list_databases",
+        "source": "GIT"
+      },
+      "job_cluster_key": "New_job_cluster",
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "ForeachDatabase",
+      "depends_on": [
+        {
+          "task_key": "list_databases_hive"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "for_each_task": {
+        "inputs": "{{tasks.list_databases_hive.values.databaseList}}",
+        "concurrency": 100,
+        "task": {
+          "task_key": "ForeachDatabase_iteration",
+          "run_if": "ALL_SUCCESS",
+          "notebook_task": {
+            "notebook_path": "table_job_hive/src/databricks/workspace/describe_history",
+            "base_parameters": {
+              "par_database": "{{input}}"
+            },
+            "source": "GIT"
+          },
+          "job_cluster_key": "New_job_cluster",
+          "timeout_seconds": 0,
+          "email_notifications": {},
+          "webhook_notifications": {}
+        }
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "tables_jobs",
+      "depends_on": [
+        {
+          "task_key": "ForeachDatabase"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "table_job_hive/src/databricks/workspace/table_job",
+        "source": "GIT"
+      },
+      "job_cluster_key": "New_job_cluster",
+      "timeout_seconds": 0,
+      "email_notifications": {}
+    }
+  ],
+  "job_clusters": [
+    {
+      "job_cluster_key": "New_job_cluster",
+      "new_cluster": {
+        "policy_id": "001F0E3652D6CF50"
+      }
+    }
+  ],
+    "git_source": {
+    "git_url": "https://gitlab.ecsbr.net/dataops/core/dataops-core-admin-prd",
+    "git_provider": "gitLab",
+    "git_branch": "main"
+  },
+  "tags": {
+          "BU": "ECS",
+          "Environment": "PRD",
+          "CreatedBy": "ADMIN",
+          "datadog": "FALSE",
+          "JobType": "ETL",
+          "BusinessServices": "DATAOPS"
+  },
+  "queue": {
+    "enabled": true
+  },
+  "run_as": {
+    "user_name": "ecs_ci_cd_datalake@br.experian.com"
+  }
+}
