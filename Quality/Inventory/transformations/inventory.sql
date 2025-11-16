@@ -1,22 +1,4 @@
-CREATE MATERIALIZED VIEW IF NOT EXISTS quality.default.inventory(
-    table_catalog STRING NOT NULL,
-    table_schema STRING NOT NULL,
-    table_name STRING NOT NULL,
-    full_table_name STRING NOT NULL,
-    table_owner STRING,
-    table_type STRING,
-    is_insertable_into BOOLEAN,
-    comment STRING,
-    created TIMESTAMP,
-    created_by STRING,
-    last_altered TIMESTAMP,
-    last_altered_by STRING,
-    last_access TIMESTAMP,
-    retention_time TIMESTAMP,
-    storage_path STRING,
-    to_be_deprecated BOOLEAN,
-    CONSTRAINT inventory_full_table_name_pk PRIMARY KEY(full_table_name)
-)
+CREATE MATERIALIZED VIEW IF NOT EXISTS quality.default.inventory()
 CLUSTER BY AUTO
 COMMENT 'Comprehensive inventory of Unity Catalog tables, including metadata, retention, and deprecation status'
 TRIGGER ON UPDATE
@@ -38,6 +20,12 @@ SELECT
     tla.last_access,
     rt.retention_time,
     t.storage_path,
+    ddt.clusteringColumns,
+    ddt.numFiles,
+    (ddt.sizeInBytes) / 1024 / 1024/ 1024 AS sizeInGB,
+    ddt.properties,
+    ddt.id,
+    ddt.tableFeatures,
     CASE 
         WHEN t.last_altered <= current_date() - INTERVAL 60 DAYS 
           OR tla.last_access <= current_date() - INTERVAL 60 DAYS 
@@ -54,6 +42,10 @@ LEFT JOIN quality.default.retention_time AS rt
     ON t.table_catalog = rt.catalog_name
     AND t.table_schema = rt.schema_name
     AND t.table_name = rt.tab_name
+LEFT JOIN quality.default.describe_details_tables AS ddt
+ON t.table_catalog = ddt.table_catalog
+    AND t.table_schema = ddt.table_schema
+    AND t.table_name = ddt.table_name
 WHERE 
     t.table_schema NOT IN ('information_schema') 
     AND t.table_catalog NOT IN ('system', 'samples')
