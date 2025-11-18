@@ -1,6 +1,6 @@
 CREATE MATERIALIZED VIEW IF NOT EXISTS quality.default.inventory()
 CLUSTER BY AUTO
-COMMENT 'Comprehensive inventory of Unity Catalog tables, including metadata, retention, and deprecation status'
+COMMENT 'Comprehensive inventory of Unity Catalog tables'
 TRIGGER ON UPDATE
 TBLPROPERTIES(pipelines.channel = "PREVIEW")
 AS
@@ -26,6 +26,7 @@ SELECT
     ddt.properties,
     ddt.id,
     ddt.tableFeatures,
+    tc.count,
     CASE 
         WHEN t.last_altered <= current_date() - INTERVAL 60 DAYS 
           OR tla.last_access <= current_date() - INTERVAL 60 DAYS 
@@ -46,6 +47,10 @@ LEFT JOIN quality.default.describe_details_tables AS ddt
 ON t.table_catalog = ddt.table_catalog
     AND t.table_schema = ddt.table_schema
     AND t.table_name = ddt.table_name
+LEFT JOIN quality.default.table_counts_current AS tc
+    ON t.table_catalog = tc.table_catalog
+    AND t.table_schema = tc.table_schema
+    AND t.table_name = tc.table_name
 WHERE 
     t.table_schema NOT IN ('information_schema') 
     AND t.table_catalog NOT IN ('system', 'samples')
